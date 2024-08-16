@@ -242,7 +242,7 @@ h6 {
 .loading {
   --spinner-width: 2rem;
   position: absolute;
-  top: 50%;
+  top: 70%;
   left: 50%;
   width: var(--spinner-width);
   height: var(--spinner-width);
