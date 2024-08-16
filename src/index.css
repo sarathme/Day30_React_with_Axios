@@ -339,17 +339,17 @@ h6 {
 
 .cta-form {
   display: flex;
-  padding: 1.2em;
+  justify-content: center;
+  padding: 1em;
   gap: 1rem;
 }
 .cta-form button {
   padding: 0.6em;
   border-radius: 1em;
-
   border: none;
   cursor: pointer;
   font-weight: 700;
-  color: var(--clr-primary-400);
+  color: var(--clr-primary-200);
   transition: transform 200ms;
 }
 
