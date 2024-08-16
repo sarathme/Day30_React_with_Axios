@@ -4,22 +4,26 @@ const validate = (values) => {
   const errors = {};
   console.log(!values.firstName);
   if (!values.firstName) {
-    errors.firstName = "Please provide your first name";
+    errors.firstName = "Required";
   }
   if (!values.lastName) {
-    errors.lastName = "Please provide your last name";
+    errors.lastName = "Required";
   }
   if (!values.email) {
-    errors.email = "Please provide your email";
+    errors.email = "Required";
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = "Please provide a valid email address";
   }
   if (!values.phone) {
-    errors.phone = "Please provide your phone number";
+    errors.phone = "Required";
+  } else if (values.phone.length < 10 || isNaN(Number(values.phone))) {
+    errors.phone = "Please provide a valid phone number";
   }
   if (!values.role) {
-    errors.role = "Please provide your designation";
+    errors.role = "Required";
   }
   if (!values.company) {
-    errors.company = "Please provide your company name";
+    errors.company = "Required";
   }
   return errors;
 };
@@ -77,7 +81,7 @@ function UserForm({
     onCloseModal();
   }
   return (
-    <form className="user-form" onSubmit={formik.handleSubmit}>
+    <form className="user-form" onSubmit={formik.handleSubmit} noValidate>
       <div className="tab">
         <h3 className="secondary-heading">
           {isEdit ? "Edit " : "Create New "}User
@@ -110,7 +114,7 @@ function UserForm({
         <label htmlFor="lname">
           Last Name
           {formik.errors.lastName ? (
-            <span>{formik.errors.firstName}</span>
+            <span>{formik.errors.lastName}</span>
           ) : null}
         </label>
         <input
@@ -127,7 +131,7 @@ function UserForm({
           {formik.errors.email ? <span>{formik.errors.email}</span> : null}
         </label>
         <input
-          type="text"
+          type="email"
           name="email"
           id="email"
           value={formik.values.email}
@@ -143,6 +147,7 @@ function UserForm({
           id="phone"
           value={formik.values.phone}
           onChange={formik.handleChange}
+          maxLength={10}
         />
         <label htmlFor="website">Website</label>
         <input

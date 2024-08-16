@@ -88,6 +88,7 @@ function App() {
             <div className="secondary-heading">Add New User</div>
             <button
               onClick={() => {
+                setEditUser(null);
                 setIsModalOpen(true);
               }}>
               <span className="material-symbols-outlined">+</span>

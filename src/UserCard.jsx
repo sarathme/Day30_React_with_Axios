@@ -42,7 +42,7 @@ function UserCard({ user, onDelete, onModalOpen, setEditUser }) {
         </p>
         <p>
           <span className="material-symbols-outlined">language</span>
-          {user.website}
+          {user.website.length > 0 ? user.website : "-"}
         </p>
       </div>
       <div className="cta">
