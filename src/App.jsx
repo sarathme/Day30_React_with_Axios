@@ -1,27 +1,59 @@
 import { useEffect, useState } from "react";
 import UserCard from "./UserCard";
 import UserList from "./UserList";
-import { deleteUser, getAllUsers } from "./utils/apiFeatures";
+import {
+  addUser,
+  deleteUser,
+  getAllUsers,
+  updateUser,
+} from "./utils/apiFeatures";
 import Loader from "./Loader";
 import Modal from "./Modal";
 import UserForm from "./UserForm";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState("ready");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editUser, setEditUser] = useState(null);
 
   useEffect(() => {
     async function fetchUser() {
-      setIsLoading(true);
+      setStatus("fetching");
       const users = await getAllUsers();
       console.log(users);
       setUsers(users.data);
-      setIsLoading(false);
+      setStatus("ready");
     }
 
     fetchUser();
   }, []);
+
+  async function handleAddUser(userData) {
+    const newUser = await addUser(userData);
+
+    setUsers((users) => [newUser, ...users]);
+    setStatus("ready");
+    setIsModalOpen(false);
+  }
+
+  async function handleEditUser(id, updatedData) {
+    const updatedUser = await updateUser(id, updatedData);
+
+    setUsers((users) =>
+      users.map((user) => {
+        if (user.id === id) {
+          return updatedUser;
+        }
+
+        return user;
+      })
+    );
+
+    setStatus("ready");
+    setEditUser(null);
+    setIsModalOpen(false);
+  }
 
   async function handleDelete(id) {
     const deleted = deleteUser(id);
@@ -34,7 +66,14 @@ function App() {
   return (
     <>
       <Modal onCloseModal={() => setIsModalOpen(false)} modalOpen={isModalOpen}>
-        <UserForm onCloseModal={() => setIsModalOpen(false)} />
+        <UserForm
+          onCloseModal={() => setIsModalOpen(false)}
+          setStatus={setStatus}
+          status={status}
+          onAddUser={handleAddUser}
+          edit={editUser}
+          onEditUser={handleEditUser}
+        />
       </Modal>
       <div className="container">
         <h1 className="primary-heading">React with axios</h1>
@@ -44,10 +83,13 @@ function App() {
         </p>
 
         <UserList>
-          {isLoading && <Loader />}
+          {status === "fetching" && <Loader />}
           <div className="user-card">
-            <div className="secondary-heading">Add User</div>
-            <button onClick={() => setIsModalOpen(true)}>
+            <div className="secondary-heading">Add New User</div>
+            <button
+              onClick={() => {
+                setIsModalOpen(true);
+              }}>
               <span className="material-symbols-outlined">+</span>
             </button>
           </div>
@@ -57,6 +99,7 @@ function App() {
               user={user}
               onDelete={handleDelete}
               onModalOpen={() => setIsModalOpen(true)}
+              setEditUser={setEditUser}
             />
           ))}
         </UserList>

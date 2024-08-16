@@ -1,6 +1,22 @@
-function UserCard({ user, onDelete, onModalOpen }) {
+function UserCard({ user, onDelete, onModalOpen, setEditUser }) {
   const companyName = user.company.name.replace("-", " ").toUpperCase();
   const role = user.company.bs.replace("-", " ").toUpperCase();
+
+  function handleEditUser() {
+    const editUser = {
+      id: user.id,
+      firstName: user.name.split(" ")[0],
+      lastName: user.name.split(" ")[1],
+      email: user.email,
+      phone: user.phone,
+      company: companyName,
+      role,
+      website: user.website,
+    };
+
+    setEditUser(editUser);
+    onModalOpen();
+  }
 
   return (
     <div className="user-card">
@@ -31,7 +47,7 @@ function UserCard({ user, onDelete, onModalOpen }) {
       </div>
       <div className="cta">
         <button>
-          <span className="material-symbols-outlined" onClick={onModalOpen}>
+          <span className="material-symbols-outlined" onClick={handleEditUser}>
             edit
           </span>
         </button>

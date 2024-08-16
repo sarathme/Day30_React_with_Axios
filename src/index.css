@@ -6,12 +6,14 @@
 
 :root {
   --clr-primary-400: hsl(160, 47%, 40%);
+  --clr-primary-600: #d6efd8;
+  --clr-primary-200: hsl(160, 92%, 15%);
   --clr-dark--400: hsl(220, 4%, 28%);
   --clr-dark--400-50: hsl(220 4% 28% / 0.9);
   --clr-dark--700: hsl(225, 5%, 15%);
   --clr-accent-400: hsl(200, 18%, 97%);
   --clr-accent-600: hsl(0, 0%, 74%);
-  --clr-secondary-400: hsl(0, 100%, 50%);
+  --clr-secondary-400: #d5ce0b;
 }
 
 /* FONT styles */
@@ -178,19 +180,21 @@ h6 {
 
 .user-card .cta {
   position: absolute;
-
   top: 0.2rem;
   right: 0;
 }
 
 .cta button {
   background: transparent;
+
   outline: none;
   border: none;
   cursor: pointer;
   transition: transform 250ms;
 }
-
+.cta button span {
+  color: currentColor;
+}
 .user-details > p {
   display: flex;
   font-size: 0.9rem;
@@ -259,11 +263,12 @@ h6 {
 }
 
 .user-form {
+  color: var(--clr-primary-600);
   position: relative;
   width: 90%;
   padding: 2em;
   overflow-y: scroll;
-  background-color: var(--clr-primary-400);
+  background-color: var(--clr-primary-200);
   border-radius: 1em;
   box-shadow: 0 1px 4px var(--clr-accent-400);
 }
@@ -273,7 +278,7 @@ h6 {
   justify-content: space-between;
   align-items: center;
   padding: 1em;
-  color: var(--clr-accent-400);
+
   border-radius: 0.3em;
   /* background-color: var(--clr-dark--400); */
   margin-bottom: 1rem;
@@ -295,12 +300,18 @@ h6 {
 }
 
 .input-group input:focus {
-  outline: 4px solid var(--clr-primary-400);
+  outline: 4px solid var(--clr-primary-600);
   outline-offset: 4px;
 }
 
 .input-group label {
-  color: var(--clr-accent-400);
+}
+
+.input-group label span {
+  margin-left: 1rem;
+  color: var(--clr-secondary-400);
+  font-style: italic;
+  font-weight: 100;
 }
 
 .cta-form {
@@ -322,4 +333,8 @@ h6 {
   outline: 2px solid var(--clr-accent-400);
   outline-offset: 4px;
   transform: scale(1.1);
+}
+
+.cta-form button:disabled {
+  cursor: not-allowed;
 }

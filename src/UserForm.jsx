@@ -1,11 +1,87 @@
-function UserForm({ onCloseModal }) {
+import { useFormik } from "formik";
+
+const validate = (values) => {
+  const errors = {};
+  console.log(!values.firstName);
+  if (!values.firstName) {
+    errors.firstName = "Please provide your first name";
+  }
+  if (!values.lastName) {
+    errors.lastName = "Please provide your last name";
+  }
+  if (!values.email) {
+    errors.email = "Please provide your email";
+  }
+  if (!values.phone) {
+    errors.phone = "Please provide your phone number";
+  }
+  if (!values.role) {
+    errors.role = "Please provide your designation";
+  }
+  if (!values.company) {
+    errors.company = "Please provide your company name";
+  }
+  return errors;
+};
+
+function UserForm({
+  onCloseModal,
+  status,
+  setStatus,
+  onAddUser,
+  edit,
+  onEditUser,
+}) {
+  const isEdit = edit !== null;
+  const initialValues =
+    edit === null
+      ? {
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          company: "",
+          role: "",
+          website: "",
+        }
+      : edit;
+
+  const formik = useFormik({
+    initialValues,
+    validate,
+    onSubmit: (values) => {
+      const { firstName, lastName, email, company, website, role, phone } =
+        values;
+      const newUser = {
+        name: firstName + " " + lastName,
+        email,
+        phone,
+        website: website || "",
+        company: {
+          name: company,
+          bs: role,
+        },
+      };
+      if (isEdit) {
+        onEditUser(edit.id, JSON.stringify({ ...newUser, id: edit.id }));
+        setStatus("updatingUser");
+        return;
+      }
+      onAddUser(JSON.stringify(newUser));
+      setStatus("addingUser");
+    },
+  });
+
   function handleCloseModal(e) {
+    e.preventDefault();
     onCloseModal();
   }
   return (
-    <form className="user-form">
+    <form className="user-form" onSubmit={formik.handleSubmit}>
       <div className="tab">
-        <h3 className="secondary-heading">Create User</h3>
+        <h3 className="secondary-heading">
+          {isEdit ? "Edit " : "Create New "}User
+        </h3>
         <div className="cta">
           <button>
             <span
@@ -17,26 +93,103 @@ function UserForm({ onCloseModal }) {
         </div>
       </div>
       <div className="input-group">
-        <label htmlFor="fname">First Name</label>
-        <input type="text" id="fname" />
-        <label htmlFor="lname">Last Name</label>
-        <input type="text" id="lname" />
+        <label htmlFor="fname">
+          First Name
+          {formik.errors.firstName ? (
+            <span>{formik.errors.firstName}</span>
+          ) : null}
+        </label>
+
+        <input
+          type="text"
+          id="fname"
+          name="firstName"
+          value={formik.values.firstName}
+          onChange={formik.handleChange}
+        />
+        <label htmlFor="lname">
+          Last Name
+          {formik.errors.lastName ? (
+            <span>{formik.errors.firstName}</span>
+          ) : null}
+        </label>
+        <input
+          type="text"
+          id="lname"
+          name="lastName"
+          value={formik.values.lastName}
+          onChange={formik.handleChange}
+        />
       </div>
       <div className="input-group">
-        <label>Email</label>
-        <input type="text" />
-        <label>Phone</label>
-        <input type="text" />
-        <label>Website</label>
-        <input type="text" />
-        <label>Role</label>
-        <input type="text" />
-        <label>Company</label>
-        <input type="text" />
+        <label htmlFor="email">
+          Email
+          {formik.errors.email ? <span>{formik.errors.email}</span> : null}
+        </label>
+        <input
+          type="text"
+          name="email"
+          id="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+        />
+        <label htmlFor="phone">
+          Phone
+          {formik.errors.phone ? <span>{formik.errors.phone}</span> : null}
+        </label>
+        <input
+          type="text"
+          name="phone"
+          id="phone"
+          value={formik.values.phone}
+          onChange={formik.handleChange}
+        />
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          name="website"
+          id="website"
+          value={formik.values.website}
+          onChange={formik.handleChange}
+        />
+        <label htmlFor="role">
+          Role
+          {formik.errors.role ? <span>{formik.errors.role}</span> : null}
+        </label>
+        <input
+          type="text"
+          name="role"
+          id="role"
+          value={formik.values.role}
+          onChange={formik.handleChange}
+        />
+        <label htmlFor="company">
+          Company
+          {formik.errors.company ? <span>{formik.errors.company}</span> : null}
+        </label>
+        <input
+          type="text"
+          name="company"
+          id="company"
+          value={formik.values.company}
+          onChange={formik.handleChange}
+        />
       </div>
       <div className="cta-form">
-        <button onClick={handleCloseModal}>Cancel</button>
-        <button>Add User</button>
+        <button
+          onClick={handleCloseModal}
+          disabled={status === "addingUser" || status === "updatingUser"}>
+          Cancel
+        </button>
+        {isEdit ? (
+          <button type="submit" disabled={status === "updatingUser"}>
+            {status === "updatingUser" ? "Updating User" : "Update User"}
+          </button>
+        ) : (
+          <button type="submit" disabled={status === "addingUser"}>
+            {status === "addingUser" ? "Adding User" : "Add User"}
+          </button>
+        )}
       </div>
     </form>
   );
