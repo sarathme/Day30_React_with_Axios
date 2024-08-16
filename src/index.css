@@ -357,7 +357,7 @@ h6 {
 .cta-form button:hover {
   outline: 2px solid var(--clr-accent-400);
   outline-offset: 4px;
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .cta-form button:disabled {
