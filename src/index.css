@@ -14,13 +14,26 @@
   --clr-accent-400: hsl(200, 18%, 97%);
   --clr-accent-600: hsl(0, 0%, 74%);
   --clr-secondary-400: #d5ce0b;
+  --fs: 1rem;
 }
 
 /* FONT styles */
 
 html {
+  font-size: var(--fs);
   font-family: "Poppins", sans-serif;
   color: var(--clr-dark--700);
+}
+
+@media (min-width: 48em) {
+  :root {
+    --fs: 1.2rem;
+  }
+}
+@media (min-width: 75em) {
+  :root {
+    --fs: 1.25rem;
+  }
 }
 
 /* CSS RESET */
@@ -109,6 +122,10 @@ h6 {
   text-transform: uppercase;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .tertiary-heading {
   font-size: 1.2rem;
   color: var(--clr-accent-400);
@@ -181,7 +198,7 @@ h6 {
 .user-card .cta {
   position: absolute;
   top: 0.2rem;
-  right: 0;
+  right: 0.2rem;
 }
 
 .cta button {
@@ -267,16 +284,19 @@ h6 {
   position: relative;
   height: auto;
   width: 95%;
-
+  padding: 2em 0em;
   overflow-y: scroll;
   background-color: var(--clr-primary-200);
   border-radius: 1em;
   box-shadow: 0 1px 4px var(--clr-accent-400);
 }
+
 .tab {
   /* position: fixed; */
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+
+  justify-content: center;
   align-items: center;
   padding: 1em;
 
@@ -284,18 +304,21 @@ h6 {
   /* background-color: var(--clr-dark--400); */
   margin-bottom: 1rem;
 }
-
+.tab .cta {
+  position: absolute;
+  top: 1rem;
+  right: 0.2rem;
+}
 .input-group {
+  /* width: min(60%, 100rem); */
   margin: 0 auto;
-  width: min(70%, 100rem);
   display: grid;
   gap: 0.6rem;
-  grid-template-columns: repeat(autofit, minmax(20rem, 20rem));
+  padding: 1em;
   margin-bottom: 1rem;
 }
 
 .input-group input {
-  /* width: 25rem; */
   height: 2.5rem;
   border-radius: 0.4em;
   border: none;
@@ -315,14 +338,14 @@ h6 {
 }
 
 .cta-form {
-  width: min(70%, 100rem);
-  margin: 0 auto;
   display: flex;
+  padding: 1.2em;
   gap: 1rem;
 }
 .cta-form button {
   padding: 0.6em;
   border-radius: 1em;
+  flex-basis: 25rem;
   border: none;
   cursor: pointer;
   font-weight: 700;

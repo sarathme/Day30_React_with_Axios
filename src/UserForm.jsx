@@ -88,7 +88,7 @@ function UserForm({
   return (
     <form className="user-form" onSubmit={formik.handleSubmit} noValidate>
       <div className="tab">
-        <h3 className="secondary-heading">
+        <h3 className="secondary-heading text-center">
           {isEdit ? "Edit " : "Create New "}User
         </h3>
         <div className="cta">
