@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 
 const validate = (values) => {
-  const errors = {};
+  let errors = {};
   console.log(!values.firstName);
   if (!values.firstName) {
     errors.firstName = "Required";
@@ -16,7 +16,11 @@ const validate = (values) => {
   }
   if (!values.phone) {
     errors.phone = "Required";
-  } else if (values.phone.length < 10 || isNaN(Number(values.phone))) {
+  } else if (
+    !/^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
+      values.phone
+    )
+  ) {
     errors.phone = "Please provide a valid phone number";
   }
   if (!values.role) {
@@ -76,6 +80,7 @@ function UserForm({
     },
   });
 
+  console.log(formik.touched);
   function handleCloseModal(e) {
     e.preventDefault();
     onCloseModal();
@@ -99,7 +104,7 @@ function UserForm({
       <div className="input-group">
         <label htmlFor="fname">
           First Name
-          {formik.errors.firstName ? (
+          {formik.touched.firstName && formik.errors.firstName ? (
             <span>{formik.errors.firstName}</span>
           ) : null}
         </label>
@@ -110,10 +115,11 @@ function UserForm({
           name="firstName"
           value={formik.values.firstName}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         <label htmlFor="lname">
           Last Name
-          {formik.errors.lastName ? (
+          {formik.touched.lastName && formik.errors.lastName ? (
             <span>{formik.errors.lastName}</span>
           ) : null}
         </label>
@@ -123,12 +129,15 @@ function UserForm({
           name="lastName"
           value={formik.values.lastName}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </div>
       <div className="input-group">
         <label htmlFor="email">
           Email
-          {formik.errors.email ? <span>{formik.errors.email}</span> : null}
+          {formik.touched.email && formik.errors.email ? (
+            <span>{formik.errors.email}</span>
+          ) : null}
         </label>
         <input
           type="email"
@@ -136,10 +145,13 @@ function UserForm({
           id="email"
           value={formik.values.email}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         <label htmlFor="phone">
           Phone
-          {formik.errors.phone ? <span>{formik.errors.phone}</span> : null}
+          {formik.touched.phone && formik.errors.phone ? (
+            <span>{formik.errors.phone}</span>
+          ) : null}
         </label>
         <input
           type="text"
@@ -147,7 +159,7 @@ function UserForm({
           id="phone"
           value={formik.values.phone}
           onChange={formik.handleChange}
-          maxLength={10}
+          onBlur={formik.handleBlur}
         />
         <label htmlFor="website">Website</label>
         <input
@@ -156,10 +168,13 @@ function UserForm({
           id="website"
           value={formik.values.website}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         <label htmlFor="role">
           Role
-          {formik.errors.role ? <span>{formik.errors.role}</span> : null}
+          {formik.touched.role && formik.errors.role ? (
+            <span>{formik.errors.role}</span>
+          ) : null}
         </label>
         <input
           type="text"
@@ -167,10 +182,13 @@ function UserForm({
           id="role"
           value={formik.values.role}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         <label htmlFor="company">
           Company
-          {formik.errors.company ? <span>{formik.errors.company}</span> : null}
+          {formik.touched.company && formik.errors.company ? (
+            <span>{formik.errors.company}</span>
+          ) : null}
         </label>
         <input
           type="text"
@@ -178,6 +196,7 @@ function UserForm({
           id="company"
           value={formik.values.company}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
       </div>
       <div className="cta-form">
